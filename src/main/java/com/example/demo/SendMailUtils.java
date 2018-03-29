@@ -30,9 +30,9 @@ import java.util.Properties;
  * @Resource
  * private JavaMailSenderImpl mailSender;
  *
- * @company：yy
- * @author: skyler
- * @time: 2016年8月27日 下午6:05:13
+ * @author: liguowei
+ * @Date: 2018/3/29 18:15
+ *
  */
 public class SendMailUtils {
 
