@@ -10,6 +10,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -28,10 +30,11 @@ import java.util.*;
  */
 @Component("DownloadExcelJob")
 public class DownloadExcelJob {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     //@Scheduled(cron = "0 */1 * * * ?")  // 每分钟执行一次
-    @Scheduled(cron = "0 0 */3 * * ? ")  // 每两个小时执行一次
-    //@Scheduled(cron = "0 0 7,9 * * ?") // 每天上午七点、9点运行
+    //@Scheduled(cron = "0 0 */3 * * ? ")  // 每两个小时执行一次
+    @Scheduled(cron = "0 0 7,9,15 * * ? ") // 每天7点、9点、15点运行
     public void downloadExcel() throws Exception {
         CloseableHttpClient httpclient = null;
         OutputStream output = null;
@@ -48,7 +51,7 @@ public class DownloadExcelJob {
 
             httpclient = HttpClients.custom().setConnectionManager(cm).setDefaultRequestConfig(defaultRequestConfig).build();
 
-            System.out.println("download-excel start...");
+            logger.info("download-excel start...");
             HttpGet httpget = new HttpGet("https://web.umeng.com/main.php?c=site&a=show&ajax=module=report&tab=0&search=&downloadType=xls");
             httpget.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             httpget.setHeader("Accept-Encoding", "gzip, deflate, br");
@@ -84,7 +87,7 @@ public class DownloadExcelJob {
             output = new FileOutputStream(file);
             bufferedOutput = new BufferedOutputStream(output);
             bufferedOutput.write(out);
-            System.out.println("download-excel end...");
+            logger.info("download-excel end...");
 
             JavaMailSenderImpl sender = SendMailUtils.initJavaMailSender();
             String[] ss = { "liguowei_hnny@163.com", "1071563296@qq.com" };
@@ -96,6 +99,7 @@ public class DownloadExcelJob {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("downloadExcel occur exception,msg:{}",e.getMessage());
         } finally {
 
             if (output != null) {

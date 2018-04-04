@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,6 +39,7 @@ import java.util.Properties;
 public class SendMailUtils {
 
     public static final String DEFALUT_ENCODING = "UTF-8";
+    private static  Logger logger = LoggerFactory.getLogger(SendMailUtils.class);
 
     public static void main(String[] args) throws Exception {
         JavaMailSenderImpl sender = initJavaMailSender();
@@ -59,6 +62,8 @@ public class SendMailUtils {
         sender.send(mailMessage);
 
         System.out.println("邮件发送成功..");
+        logger.info("邮件发送成功..");
+
     }
 
     public static void sendTextWithImg(JavaMailSenderImpl sender, String[] tos, String subject, String text,
@@ -72,7 +77,8 @@ public class SendMailUtils {
         // 发送邮件
         sender.send(mailMessage);
 
-        System.out.println("邮件发送成功..");
+        // System.out.println("邮件发送成功..");
+        logger.info("邮件发送成功..");
     }
 
     public static void sendWithAttament(JavaMailSenderImpl sender, String[] tos, String subject, String text,
@@ -86,7 +92,8 @@ public class SendMailUtils {
         messageHelper.addAttachment(AttachName, file);
         sender.send(mailMessage);
 
-        System.out.println("邮件发送成功..");
+        logger.info("邮件发送成功..");
+        //System.out.println("邮件发送成功..");
 
     }
 
@@ -107,7 +114,7 @@ public class SendMailUtils {
         // 发送邮件
         sender.send(mailMessage);
 
-        System.out.println("邮件发送成功..");
+        //System.out.println("邮件发送成功..");
 
     }
 
