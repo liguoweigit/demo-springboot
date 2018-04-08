@@ -30,9 +30,9 @@ import java.util.UUID;
 public class DownloadExcelJob {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Scheduled(cron = "0 */1 * * * ?")  // 每分钟执行一次
+    //@Scheduled(cron = "0 */1 * * * ?")  // 每分钟执行一次
     //@Scheduled(cron = "0 0 */3 * * ? ")  // 每两个小时执行一次
-    //@Scheduled(cron = "0 0 7,9,15 * * ? ") // 每天7点、9点、15点运行
+    @Scheduled(cron = "0 0 7,10,14,17,22 * * ? ") // 每天定点运行
     public void downloadExcel() throws Exception {
         CloseableHttpClient httpclient = null;
         OutputStream output = null;
